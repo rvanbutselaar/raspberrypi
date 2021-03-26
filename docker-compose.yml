@@ -12,6 +12,7 @@ prometheus:
   links:
     - cadvisor:cadvisor
     - node-exporter:node-exporter
+    - esmr5_exporter:esmr5_exporter
 
 node-exporter:
   image: prom/node-exporter:latest
@@ -19,6 +20,15 @@ node-exporter:
   restart: unless-stopped
   expose:
     - 9100
+
+esmr5_exporter:
+  image: esmr5_exporter:1.0
+  container_name: esmr5_exporter
+  restart: unless-stopped
+  devices:
+    - "/dev/ttyUSB0:/dev/ttyUSB0"
+  expose:
+    - 8000
 
 cadvisor:
   image: zcube/cadvisor
