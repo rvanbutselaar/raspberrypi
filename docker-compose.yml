@@ -1,9 +1,8 @@
-
 prometheus:
   image: prom/prometheus:latest
   container_name: prometheus
   restart: unless-stopped
-  command: --storage.tsdb.retention.time=365d --config.file=/etc/prometheus/prometheus.yml
+  command: --storage.tsdb.retention.time=15d --config.file=/etc/prometheus/prometheus.yml
   volumes:
     - /data/prometheus/config:/etc/prometheus/
     - /data/prometheus/data:/data
@@ -13,6 +12,7 @@ prometheus:
     - cadvisor:cadvisor
     - node-exporter:node-exporter
     - esmr5_exporter:esmr5_exporter
+    - azrt:azrt
 
 node-exporter:
   image: prom/node-exporter:latest
@@ -20,15 +20,6 @@ node-exporter:
   restart: unless-stopped
   expose:
     - 9100
-
-esmr5_exporter:
-  image: esmr5_exporter:1.0
-  container_name: esmr5_exporter
-  restart: unless-stopped
-  devices:
-    - "/dev/ttyUSB0:/dev/ttyUSB0"
-  expose:
-    - 8000
 
 cadvisor:
   image: zcube/cadvisor
@@ -41,6 +32,26 @@ cadvisor:
     - /var/run:/var/run:rw
     - /sys:/sys:ro
     - /var/lib/docker/:/var/lib/docker:ro
+  expose:
+    - 8080
+
+esmr5_exporter:
+  image: esmr5_exporter:1.0
+  container_name: esmr5_exporter
+  restart: unless-stopped
+  devices:
+    - "/dev/ttyUSB0:/dev/ttyUSB0"
+  expose:
+    - 8000
+
+azrt:
+  image: **
+  container_name: azrt
+  restart: unless-stopped
+  environment:
+    - EMAIL=***
+    - PASSWORD=****
+    - PLANTID=***
   expose:
     - 8080
 

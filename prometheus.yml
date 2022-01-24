@@ -10,7 +10,11 @@ scrape_configs:
   - job_name: 'prometheus'
 
     static_configs:
-         - targets: ['localhost:9090','cadvisor:8080','node-exporter:9100']
+         - targets:
+           - localhost:9090
+           - cadvisor:8080
+           - node-exporter:9100
+           - azrt:8080
 
   - job_name: 'esmr5_exporter'
     scrape_interval: 15s
