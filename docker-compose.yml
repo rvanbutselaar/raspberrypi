@@ -1,8 +1,10 @@
 prometheus:
-  image: prom/prometheus:latest
+  image: prom/prometheus:v2.35.0
   container_name: prometheus
   restart: unless-stopped
-  command: --storage.tsdb.retention.time=15d --config.file=/etc/prometheus/prometheus.yml
+  command:
+    - '--storage.tsdb.retention.time=31d'
+    - '--config.file=/etc/prometheus/prometheus.yml'
   volumes:
     - /data/prometheus/config:/etc/prometheus/
     - /data/prometheus/data:/data
@@ -15,21 +17,22 @@ prometheus:
     - azrt:azrt
 
 node-exporter:
-  image: prom/node-exporter:latest
+  image: prom/node-exporter:v1.3.1
   container_name: node_exporter
   restart: unless-stopped
   expose:
     - 9100
 
 cadvisor:
-  image: zcube/cadvisor
+  image: zcube/cadvisor:v0.39.3
   container_name: cadvisor
+  privileged: true
   restart: unless-stopped
   devices:
-    - /dev/kmsg
+    - /dev/kmsg:/dev/kmsg
   volumes:
     - /:/rootfs:ro
-    - /var/run:/var/run:rw
+    - /var/run:/var/run:ro
     - /sys:/sys:ro
     - /var/lib/docker/:/var/lib/docker:ro
   expose:
@@ -50,13 +53,13 @@ azrt:
   restart: unless-stopped
   environment:
     - EMAIL=***
-    - PASSWORD=****
+    - PASSWORD=***
     - PLANTID=***
   expose:
     - 8080
 
 grafana:
-  image: grafana/grafana:latest
+  image: grafana/grafana:7.5.16
   container_name: grafana
   restart: unless-stopped
   user: "$UID:$GID"
