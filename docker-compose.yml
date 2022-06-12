@@ -24,8 +24,10 @@ node-exporter:
     - 9100
 
 cadvisor:
-  image: zcube/cadvisor:v0.39.3
+  image: cadvisor:v0.44.1
   container_name: cadvisor
+  command:
+    - '--raw_cgroup_prefix_whitelist=/docker/ --disable_metrics=hugetlb'
   privileged: true
   restart: unless-stopped
   devices:
