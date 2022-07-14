@@ -30,8 +30,7 @@ https://github.com/sbkg0002/prometheus_esmr5
 
 # TODO
 
-- docker login aws??
-- rebuild azrt for arm64 -> add to pipeline
+- docker login aws from pi
+- rebuild azrt for arm64 -> add to pipeline -> tune
 - build esmr5_exporter for arm64 in pipeline
-- build cadvisor for arm64 in pipeline
 - backup grafana dashboards
