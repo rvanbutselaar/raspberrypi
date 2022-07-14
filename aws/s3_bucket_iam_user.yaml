@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: S3 Bucket and IAM user
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: thanos-metrics-home
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+  IAMUser:
+    Type: AWS::IAM::User
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      UserName: thanos
+      Policies:
+        - PolicyName: thanos
+          PolicyDocument:
+            {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Sid": "Statement",
+                        "Effect": "Allow",
+                        "Action": [
+                            "s3:ListBucket",
+                            "s3:GetObject",
+                            "s3:DeleteObject",
+                            "s3:PutObject"
+                        ],
+                        "Resource": [
+                            "arn:aws:s3:::thanos-metrics-home/*",
+                            "arn:aws:s3:::thanos-metrics-home"
+                        ]
+                    }
+                ]
+            }

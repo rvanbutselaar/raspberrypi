@@ -5,9 +5,13 @@ prometheus:
   command:
     - '--storage.tsdb.retention.time=31d'
     - '--config.file=/etc/prometheus/prometheus.yml'
+    - '--web.enable-admin-api'
+    - '--web.enable-lifecycle'
+    - '--storage.tsdb.max-block-duration=2h'
+    - '--storage.tsdb.min-block-duration=2h'
   volumes:
     - /data/prometheus/config:/etc/prometheus/
-    - /data/prometheus/data:/data
+    - /data/prometheus/data:/prometheus/data
   ports:
     - 9090:9090
   links:
@@ -15,6 +19,48 @@ prometheus:
     - node-exporter:node-exporter
     - esmr5_exporter:esmr5_exporter
     - azrt:azrt
+
+thanos_sidecar:
+  image: quay.io/thanos/thanos:v0.26.0
+  container_name: thanos_sidecar
+  command:
+    - sidecar
+    - --tsdb.path=/prometheus/data
+    - --objstore.config-file=/conf/bucket.yml
+    - --prometheus.url=http://prometheus:9090
+    - --grpc-address=0.0.0.0:10901
+  volumes:
+    - /data/thanos/config:/conf
+    - /data/prometheus/data:/prometheus/data
+  links:
+    - prometheus:prometheus
+
+thanos_store_gateway:
+  image: quay.io/thanos/thanos:v0.26.0
+  container_name: thanos_store_gateway
+  command:
+    - store
+    - --data-dir=/thanos/data
+    - --objstore.config-file=/conf/bucket.yml
+    - --grpc-address=0.0.0.0:10901
+  volumes:
+    - /data/thanos/config:/conf
+    - /data/thanos/data:/thanos/data
+
+thanos_query:
+  image: quay.io/thanos/thanos:v0.26.0
+  container_name: thanos_query
+  command:
+    - query
+    - --grpc-address=0.0.0.0:10901
+    - --http-address=0.0.0.0:9191
+    - --store=thanos_sidecar:10901
+    - --store=thanos_store_gateway:10901
+  ports:
+    - '9191:9191'
+  links:
+    - thanos_sidecar:thanos_sidecar
+    - thanos_store_gateway:thanos_store_gateway
 
 node-exporter:
   image: prom/node-exporter:v1.3.1
@@ -50,7 +96,7 @@ esmr5_exporter:
     - 8000
 
 azrt:
-  image: **
+  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/azrt:0.2.0
   container_name: azrt
   restart: unless-stopped
   environment:
@@ -67,6 +113,7 @@ grafana:
   user: "$UID:$GID"
   links:
     - prometheus:prometheus
+    - thanos_query:thanos_query
   volumes:
     - /data/grafana:/var/lib/grafana
   environment:

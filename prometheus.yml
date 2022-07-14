@@ -1,6 +1,8 @@
 global:
   scrape_interval: 30s
   scrape_timeout: 10s
+  external_labels:
+    cluster: pi
 
 rule_files:
   - alert.yml
