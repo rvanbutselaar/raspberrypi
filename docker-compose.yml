@@ -87,7 +87,7 @@ cadvisor:
     - 8080
 
 esmr5_exporter:
-  image: esmr5_exporter:1.0
+  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/esmr5_exporter:891b4695f30fe134dcc234c851b55e810f38d695
   container_name: esmr5_exporter
   restart: unless-stopped
   devices:
@@ -96,7 +96,7 @@ esmr5_exporter:
     - 8000
 
 azrt:
-  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/azrt:0.2.0
+  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/azrt:034574432a4e04c14e56b2f112b04f359f74e6aa
   container_name: azrt
   restart: unless-stopped
   environment:

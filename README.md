@@ -12,6 +12,12 @@ ssh pi@[ip]
 /init.sh
 ```
 
+## amazon-ecr-credential-helper
+
+Volg de stappen in de onderstaande link voor de root user:
+
+<https://github.com/awslabs/amazon-ecr-credential-helper#configuration>
+
 ## Prometheus
 
 ```bash
@@ -28,9 +34,7 @@ sudo docker run -p 8000:8000 --device=/dev/ttyUSB0 --rm -ti --name esmr5_exporte
 Zie:
 https://github.com/sbkg0002/prometheus_esmr5
 
-# TODO
+## TODO
 
-- docker login aws from pi
-- rebuild azrt for arm64 -> add to pipeline -> tune
-- build esmr5_exporter for arm64 in pipeline
+- verify and use my own esmr5 version from the apps dir
 - backup grafana dashboards
