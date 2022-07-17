@@ -36,5 +36,6 @@ https://github.com/sbkg0002/prometheus_esmr5
 
 ## TODO
 
-- verify and use my own esmr5 version from the apps dir
 - backup grafana dashboards
+- tune grafana dashboards
+- notify on new version docker image
