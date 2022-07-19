@@ -2,7 +2,7 @@ name: Build & Deploy AZRT
 
 on:
   schedule:
-    - cron: '30 7 * * *'
+    - cron: '40 7 * * *'
   push:
     branches: [ main ]
   pull_request:
