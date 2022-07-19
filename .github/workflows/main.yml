@@ -1,0 +1,19 @@
+name: Build & Deploy AZRT
+
+on:
+  schedule:
+    - cron: '30 7 * * *'
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  dip:
+    name: Check if images are up-to-date inside docker-compose file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v2
+      - name: Run check-up-to-date
+        run: /Users/ronaldb/personal/raspberrypi/check-up-to-date.sh
