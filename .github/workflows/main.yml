@@ -1,4 +1,4 @@
-name: Build & Deploy AZRT
+name: Check up-to-date
 
 on:
   schedule:
