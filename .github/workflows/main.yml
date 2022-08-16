@@ -26,6 +26,6 @@ jobs:
         run: ./check-up-to-date-cadvisor.sh
 
       - name: Create PR
-        run:  gh pr create --title "Update Docker image(s)" --body "Please review and approve" --reviewer rvanbutselaar
+        run:  gh pr create --base main --title "Update Docker image(s)" --body "Please review and approve" --reviewer rvanbutselaar
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
