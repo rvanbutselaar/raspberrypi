@@ -7,7 +7,7 @@ for i in $images; do
 
     if [ "${latest_version}" != "${array[1]}" ]; then
         echo "${i} is NOT up-to-date, latest version is: ${latest_version}"
-        sed -i '' "s|image: ${i}|image: ${array[0]}:${latest_version}|g" docker-compose.yml
+        sed -i "s|image: ${i}|image: ${array[0]}:${latest_version}|g" docker-compose.yml
     else
         echo "${i} is up-to-date"
     fi
