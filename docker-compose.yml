@@ -70,7 +70,7 @@ node-exporter:
     - 9100
 
 cadvisor:
-  image: cadvisor:v0.44.1
+  image: gcr.io/cadvisor/cadvisor:v0.44.1
   container_name: cadvisor
   command:
     - '--raw_cgroup_prefix_whitelist=/docker/ --disable_metrics=hugetlb'
