@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run check-up-to-date
         run: ./check-up-to-date.sh
@@ -23,7 +23,17 @@ jobs:
       - name: Run check-up-to-date-cadvisor
         run: ./check-up-to-date-cadvisor.sh
 
+      - name: Create Branch
+        uses: actions/checkout@v3
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout -b update-docker-image
+          git add .
+          git commit -m "Update Docker image(s)"
+          git push
+
       - name: Create PR
-        run:  gh pr create --title "Update Docker image(s)" --body "Please review and approve" --reviewer rvanbutselaar
+        run:  gh pr create --head update-docker-image --title "Update Docker image(s)" --body "Please review and approve" --reviewer rvanbutselaar
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
