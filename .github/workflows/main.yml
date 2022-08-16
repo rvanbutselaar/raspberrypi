@@ -15,7 +15,15 @@ jobs:
     steps:
       - name: Checkout Source
         uses: actions/checkout@v2
+
       - name: Run check-up-to-date
         run: ./check-up-to-date.sh
+
       - name: Run check-up-to-date-thanos
         run: ./check-up-to-date-thanos.sh
+
+      - name: Run check-up-to-date-cadvisor
+        run: ./check-up-to-date-cadvisor.sh
+
+      - name: Create PR
+        run:  gh pr create --title "Update Docker image(s)" --body "Please review and approve" --reviewer rvanbutselaar
