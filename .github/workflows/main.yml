@@ -27,3 +27,5 @@ jobs:
 
       - name: Create PR
         run:  gh pr create --title "Update Docker image(s)" --body "Please review and approve" --reviewer rvanbutselaar
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
