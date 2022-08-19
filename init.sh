@@ -6,4 +6,5 @@ curl -sSL https://get.docker.com | sh
 sudo mkdir -p /data/prometheus/config
 sudo mkdir -p /data/thanos/config
 echo -n ' cgroup_enable=memory swapaccount=1' >> /boot/cmdline.txt
-#gpg2 --full-generate-key
+
+echo "0 10 * * * root /data/update-docker-compose.sh" > /etc/cron.d/update-docker-compose
