@@ -99,10 +99,7 @@ azrt:
   image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/azrt:034574432a4e04c14e56b2f112b04f359f74e6aa
   container_name: azrt
   restart: unless-stopped
-  environment:
-    - EMAIL=***
-    - PASSWORD=***
-    - PLANTID=***
+  env_file: azrt.env
   expose:
     - 8080
 
@@ -116,8 +113,6 @@ grafana:
     - thanos_query:thanos_query
   volumes:
     - /data/grafana:/var/lib/grafana
-  environment:
-    - GF_SECURITY_ADMIN_PASSWORD=admin
-    - GF_USERS_ALLOW_SIGN_UP=false
+  env_file: grafana.env
   ports:
     - 3000:3000
