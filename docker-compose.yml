@@ -21,7 +21,7 @@ prometheus:
     - azrt:azrt
 
 thanos_sidecar:
-  image: quay.io/thanos/thanos:v0.27.0
+  image: quay.io/thanos/thanos:v0.28.0
   container_name: thanos_sidecar
   command:
     - sidecar
@@ -36,7 +36,7 @@ thanos_sidecar:
     - prometheus:prometheus
 
 thanos_store_gateway:
-  image: quay.io/thanos/thanos:v0.27.0
+  image: quay.io/thanos/thanos:v0.28.0
   container_name: thanos_store_gateway
   command:
     - store
@@ -48,7 +48,7 @@ thanos_store_gateway:
     - /data/thanos/data:/thanos/data
 
 thanos_query:
-  image: quay.io/thanos/thanos:v0.27.0
+  image: quay.io/thanos/thanos:v0.28.0
   container_name: thanos_query
   command:
     - query
@@ -104,7 +104,7 @@ azrt:
     - 8080
 
 grafana:
-  image: grafana/grafana:9.1.0
+  image: grafana/grafana:9.1.1
   container_name: grafana
   restart: unless-stopped
   user: "$UID:$GID"
