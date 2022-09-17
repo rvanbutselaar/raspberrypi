@@ -104,7 +104,7 @@ azrt:
     - 8080
 
 grafana:
-  image: grafana/grafana:9.1.4
+  image: grafana/grafana:9.1.5
   container_name: grafana
   restart: unless-stopped
   user: "$UID:$GID"
