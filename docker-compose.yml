@@ -63,7 +63,7 @@ thanos_query:
     - thanos_store_gateway:thanos_store_gateway
 
 node-exporter:
-  image: prom/node-exporter:v1.3.1
+  image: prom/node-exporter:v1.4.0
   container_name: node_exporter
   restart: unless-stopped
   expose:
