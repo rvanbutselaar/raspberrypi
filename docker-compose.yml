@@ -43,6 +43,7 @@ thanos_store_gateway:
     - --data-dir=/thanos/data
     - --objstore.config-file=/conf/bucket.yml
     - --grpc-address=0.0.0.0:10901
+    - --sync-block-duration=30m
   volumes:
     - /data/thanos/config:/conf
     - /data/thanos/data:/thanos/data
