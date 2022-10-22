@@ -97,7 +97,7 @@ esmr5_exporter:
     - 8000
 
 azrt:
-  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/azrt:64ea1f5845af979dff629bfa73b489e54a2fbb4d
+  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/azrt:49e607f1a5824951d4725059514a4b7c5fb3243d
   container_name: azrt
   restart: unless-stopped
   env_file: azrt.env
