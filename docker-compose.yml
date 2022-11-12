@@ -1,5 +1,5 @@
 prometheus:
-  image: prom/prometheus:v2.39.1
+  image: prom/prometheus:v2.40.1
   container_name: prometheus
   restart: unless-stopped
   command:
@@ -71,7 +71,7 @@ node-exporter:
     - 9100
 
 cadvisor:
-  image: gcr.io/cadvisor/cadvisor:v0.45.0
+  image: gcr.io/cadvisor/cadvisor:v0.46.0
   container_name: cadvisor
   command:
     - '--raw_cgroup_prefix_whitelist=/docker/ --disable_metrics=hugetlb'
@@ -105,7 +105,7 @@ azrt:
     - 8080
 
 grafana:
-  image: grafana/grafana:9.2.3
+  image: grafana/grafana:9.2.4
   container_name: grafana
   restart: unless-stopped
   user: "$UID:$GID"
