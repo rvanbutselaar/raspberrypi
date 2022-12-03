@@ -1,5 +1,5 @@
 prometheus:
-  image: prom/prometheus:v2.40.3
+  image: prom/prometheus:v2.40.5
   container_name: prometheus
   restart: unless-stopped
   command:
@@ -64,7 +64,7 @@ thanos_query:
     - thanos_store_gateway:thanos_store_gateway
 
 node-exporter:
-  image: prom/node-exporter:v1.4.0
+  image: prom/node-exporter:v1.5.0
   container_name: node_exporter
   restart: unless-stopped
   expose:
@@ -105,7 +105,7 @@ azrt:
     - 8080
 
 grafana:
-  image: grafana/grafana:9.2.6
+  image: grafana/grafana:9.3.1
   container_name: grafana
   restart: unless-stopped
   user: "$UID:$GID"
