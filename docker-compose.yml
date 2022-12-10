@@ -88,7 +88,7 @@ cadvisor:
     - 8080
 
 esmr5_exporter:
-  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/esmr5_exporter:0f2e72bcbe8dd4c1033ef38048b8a2141402c96c
+  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/esmr5_exporter:6c2ee50f4b2b782ac5e42ed532d05682abbab82f
   container_name: esmr5_exporter
   restart: unless-stopped
   devices:
