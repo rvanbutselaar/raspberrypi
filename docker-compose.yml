@@ -104,6 +104,12 @@ azrt:
   expose:
     - 8080
 
+brandweerrooster_client:
+  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/brandweerrooster_client:48369b1cdab5dd065150bb9c8b44cf73dbbc824e
+  container_name: brandweerrooster_client
+  restart: unless-stopped
+  env_file: brandweerrooster_client.env
+
 grafana:
   image: grafana/grafana:9.3.2
   container_name: grafana
