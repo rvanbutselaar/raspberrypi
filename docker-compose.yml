@@ -21,7 +21,7 @@ prometheus:
     - azrt:azrt
 
 thanos_sidecar:
-  image: quay.io/thanos/thanos:v0.30.2
+  image: quay.io/thanos/thanos:null
   container_name: thanos_sidecar
   command:
     - sidecar
@@ -36,7 +36,7 @@ thanos_sidecar:
     - prometheus:prometheus
 
 thanos_store_gateway:
-  image: quay.io/thanos/thanos:v0.30.2
+  image: quay.io/thanos/thanos:null
   container_name: thanos_store_gateway
   command:
     - store
@@ -49,7 +49,7 @@ thanos_store_gateway:
     - /data/thanos/data:/thanos/data
 
 thanos_query:
-  image: quay.io/thanos/thanos:v0.30.2
+  image: quay.io/thanos/thanos:null
   container_name: thanos_query
   command:
     - query
@@ -71,7 +71,7 @@ node-exporter:
     - 9100
 
 cadvisor:
-  image: gcr.io/cadvisor/cadvisor:v0.47.0
+  image: gcr.io/cadvisor/cadvisor:null
   container_name: cadvisor
   command:
     - '--raw_cgroup_prefix_whitelist=/docker/ --disable_metrics=hugetlb'
