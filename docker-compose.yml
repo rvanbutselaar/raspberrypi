@@ -82,7 +82,7 @@ thanos_compactor:
     - /data/thanos/compactor:/thanos/data
 
 node-exporter:
-  image: prom/node-exporter:v1.5.0
+  image: prom/node-exporter:v1.6.0
   container_name: node_exporter
   restart: unless-stopped
   expose:
