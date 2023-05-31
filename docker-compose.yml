@@ -63,6 +63,24 @@ thanos_query:
     - thanos_sidecar:thanos_sidecar
     - thanos_store_gateway:thanos_store_gateway
 
+thanos_compactor:
+  image: quay.io/thanos/thanos:v0.31.0
+  container_name: thanos_query
+  command:
+    - compact
+    - --data-dir=/thanos/data
+    - --objstore.config-file=/conf/bucket.yml
+    - --retention.resolution-raw=30d
+    - --retention.resolution-5m=120d
+    - --retention.resolution-1h=0d
+    - --consistency-delay=60m
+    - --compact.concurrency=1
+    - --wait
+    - --wait-interval=15m
+  volumes:
+    - /data/thanos/config:/conf
+    - /data/thanos/compactor:/thanos/data
+
 node-exporter:
   image: prom/node-exporter:v1.5.0
   container_name: node_exporter
