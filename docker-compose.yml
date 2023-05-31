@@ -65,7 +65,7 @@ thanos_query:
 
 thanos_compactor:
   image: quay.io/thanos/thanos:v0.31.0
-  container_name: thanos_query
+  container_name: thanos_compactor
   command:
     - compact
     - --data-dir=/thanos/data
