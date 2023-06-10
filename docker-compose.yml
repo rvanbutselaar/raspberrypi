@@ -129,7 +129,7 @@ brandweerrooster_client:
   env_file: brandweerrooster_client.env
 
 grafana:
-  image: grafana/grafana:9.5.2
+  image: grafana/grafana:9.5.3
   container_name: grafana
   restart: unless-stopped
   user: "$UID:$GID"
