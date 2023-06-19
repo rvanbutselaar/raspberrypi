@@ -3,12 +3,12 @@ prometheus:
   container_name: prometheus
   restart: unless-stopped
   command:
-    - '--storage.tsdb.retention.time=31d'
-    - '--config.file=/etc/prometheus/prometheus.yml'
-    - '--web.enable-admin-api'
-    - '--web.enable-lifecycle'
-    - '--storage.tsdb.max-block-duration=2h'
-    - '--storage.tsdb.min-block-duration=2h'
+    - "--storage.tsdb.retention.time=31d"
+    - "--config.file=/etc/prometheus/prometheus.yml"
+    - "--web.enable-admin-api"
+    - "--web.enable-lifecycle"
+    - "--storage.tsdb.max-block-duration=2h"
+    - "--storage.tsdb.min-block-duration=2h"
   volumes:
     - /data/prometheus/config:/etc/prometheus/
     - /data/prometheus/data:/prometheus/data
@@ -58,28 +58,35 @@ thanos_query:
     - --store=thanos_sidecar:10901
     - --store=thanos_store_gateway:10901
   ports:
-    - '9191:9191'
+    - "9191:9191"
   links:
     - thanos_sidecar:thanos_sidecar
     - thanos_store_gateway:thanos_store_gateway
 
-# thanos_compactor:
-#   image: quay.io/thanos/thanos:v0.31.0
-#   container_name: thanos_compactor
-#   command:
-#     - compact
-#     - --data-dir=/thanos/data
-#     - --objstore.config-file=/conf/bucket.yml
-#     - --retention.resolution-raw=30d
-#     - --retention.resolution-5m=120d
-#     - --retention.resolution-1h=0d
-#     - --consistency-delay=60m
-#     - --compact.concurrency=1
-#     - --wait
-#     - --wait-interval=15m
-#   volumes:
-#     - /data/thanos/config:/conf
-#     - /data/thanos/compactor:/thanos/data
+thanos_compactor:
+  image: quay.io/thanos/thanos:v0.31.0
+  container_name: thanos_compactor
+  command:
+    - compact
+    - --data-dir=/thanos/data
+    - --objstore.config-file=/conf/bucket.yml
+    - --retention.resolution-raw=30d
+    - --retention.resolution-5m=120d
+    - --retention.resolution-1h=0d
+    - --consistency-delay=60m
+    - --downsample.concurrency=1
+    - --compact.concurrency=1
+    - --log.level=debug
+    - --web.disable
+    - --block-viewer.global.sync-block-interval=60m
+    - --block-meta-fetch-concurrency=1
+    - --compact.cleanup-interval=0s
+    - --compact.progress-interval=0s
+    - --wait
+    - --wait-interval=8h
+  volumes:
+    - /data/thanos/config:/conf
+    - /data/thanos/compactor:/thanos/data
 
 node-exporter:
   image: prom/node-exporter:v1.6.0
@@ -92,7 +99,7 @@ cadvisor:
   image: gcr.io/cadvisor/cadvisor:v0.47.0
   container_name: cadvisor
   command:
-    - '--raw_cgroup_prefix_whitelist=/docker/ --disable_metrics=hugetlb'
+    - "--raw_cgroup_prefix_whitelist=/docker/ --disable_metrics=hugetlb"
   privileged: true
   restart: unless-stopped
   devices:
