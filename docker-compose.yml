@@ -57,6 +57,7 @@ thanos_query:
     - --http-address=0.0.0.0:9191
     - --store=thanos_sidecar:10901
     - --store=thanos_store_gateway:10901
+    - --query.auto-downsampling
   ports:
     - "9191:9191"
   links:
