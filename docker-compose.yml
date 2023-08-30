@@ -23,6 +23,7 @@ prometheus:
 thanos_sidecar:
   image: quay.io/thanos/thanos:v0.32.0
   container_name: thanos_sidecar
+  restart: unless-stopped
   command:
     - sidecar
     - --tsdb.path=/prometheus/data
@@ -38,6 +39,7 @@ thanos_sidecar:
 thanos_store_gateway:
   image: quay.io/thanos/thanos:v0.32.0
   container_name: thanos_store_gateway
+  restart: unless-stopped
   command:
     - store
     - --data-dir=/thanos/data
@@ -51,6 +53,7 @@ thanos_store_gateway:
 thanos_query:
   image: quay.io/thanos/thanos:v0.32.0
   container_name: thanos_query
+  restart: unless-stopped
   command:
     - query
     - --grpc-address=0.0.0.0:10901
@@ -67,6 +70,7 @@ thanos_query:
 thanos_compactor:
   image: quay.io/thanos/thanos:v0.32.0
   container_name: thanos_compactor
+  restart: unless-stopped
   command:
     - compact
     - --data-dir=/thanos/data
