@@ -1,5 +1,5 @@
 prometheus:
-  image: prom/prometheus:v2.47.0
+  image: prom/prometheus:v2.47.1
   container_name: prometheus
   restart: unless-stopped
   command:
@@ -21,7 +21,7 @@ prometheus:
     - azrt:azrt
 
 thanos_sidecar:
-  image: quay.io/thanos/thanos:v0.32.3
+  image: quay.io/thanos/thanos:v0.32.4
   container_name: thanos_sidecar
   restart: unless-stopped
   command:
@@ -37,7 +37,7 @@ thanos_sidecar:
     - prometheus:prometheus
 
 thanos_store_gateway:
-  image: quay.io/thanos/thanos:v0.32.3
+  image: quay.io/thanos/thanos:v0.32.4
   container_name: thanos_store_gateway
   restart: unless-stopped
   command:
@@ -51,7 +51,7 @@ thanos_store_gateway:
     - /data/thanos/data:/thanos/data
 
 thanos_query:
-  image: quay.io/thanos/thanos:v0.32.3
+  image: quay.io/thanos/thanos:v0.32.4
   container_name: thanos_query
   restart: unless-stopped
   command:
@@ -68,7 +68,7 @@ thanos_query:
     - thanos_store_gateway:thanos_store_gateway
 
 thanos_compactor:
-  image: quay.io/thanos/thanos:v0.32.3
+  image: quay.io/thanos/thanos:v0.32.4
   container_name: thanos_compactor
   restart: unless-stopped
   command:
