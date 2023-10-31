@@ -8,3 +8,4 @@ sudo mkdir -p /data/thanos/config
 echo -n ' cgroup_enable=memory swapaccount=1' >> /boot/cmdline.txt
 
 echo "0 10 * * * root /data/update-docker-compose.sh" > /etc/cron.d/update-docker-compose
+echo "*/5 * * * * root /data/test-network.sh >> /var/log/test-network.log 2>&1" > /etc/cron.d/test-network

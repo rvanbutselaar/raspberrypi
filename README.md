@@ -38,4 +38,3 @@ https://github.com/sbkg0002/prometheus_esmr5
 
 - backup grafana dashboards
 - tune grafana dashboards
-- notify on new version docker image
