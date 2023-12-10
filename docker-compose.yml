@@ -135,7 +135,7 @@ azrt:
     - 8080
 
 brandweerrooster_client:
-  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/brandweerrooster_client:516dc8595b3a6d8d3af9aa29b179ab6f52aba4ed
+  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/brandweerrooster_client:d240fb26efe36984e860dbd7600630355bc78b0e
   container_name: brandweerrooster_client
   restart: unless-stopped
   env_file: brandweerrooster_client.env
