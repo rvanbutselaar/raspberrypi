@@ -1,8 +1,6 @@
 name: Check up-to-date
 
 on:
-  schedule:
-    - cron: '34 7 * * 6'
   push:
     branches: [ main ]
 
