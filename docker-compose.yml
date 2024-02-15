@@ -2,6 +2,7 @@ prometheus:
   image: prom/prometheus:v2.49.1
   container_name: prometheus
   restart: unless-stopped
+  user: "1001"
   command:
     - "--storage.tsdb.retention.time=31d"
     - "--config.file=/etc/prometheus/prometheus.yml"
