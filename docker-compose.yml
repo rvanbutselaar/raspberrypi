@@ -120,7 +120,7 @@ cadvisor:
     - 8080
 
 esmr5_exporter:
-  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/esmr5_exporter:a5ccdad3ef6314f4de6538c6840fd9667cfa731c
+  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/esmr5_exporter:4d83c5bdb7d29cd9157674e513f2ae5a1e3caa6c
   container_name: esmr5_exporter
   restart: unless-stopped
   devices:
@@ -137,7 +137,7 @@ azrt:
     - 8080
 
 brandweerrooster_client:
-  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/brandweerrooster_client:3d03708571ab648afca67b7b89feea122bd6ccc6
+  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/brandweerrooster_client:b24c2388f98294f08525df9680f4b7bf8958c923
   container_name: brandweerrooster_client
   restart: unless-stopped
   env_file: brandweerrooster_client.env
