@@ -1,157 +1,162 @@
-prometheus:
-  image: prom/prometheus:v2.51.2
-  container_name: prometheus
-  restart: unless-stopped
-  user: "1001"
-  command:
-    - "--storage.tsdb.retention.time=31d"
-    - "--config.file=/etc/prometheus/prometheus.yml"
-    - "--web.enable-admin-api"
-    - "--web.enable-lifecycle"
-    - "--storage.tsdb.max-block-duration=2h"
-    - "--storage.tsdb.min-block-duration=2h"
-  volumes:
-    - /data/prometheus/config:/etc/prometheus/
-    - /data/prometheus/data:/prometheus/data
-  ports:
-    - 9090:9090
-  links:
-    - cadvisor:cadvisor
-    - node-exporter:node-exporter
-    - esmr5_exporter:esmr5_exporter
-    - azrt:azrt
+version: "3"
 
-thanos_sidecar:
-  image: quay.io/thanos/thanos:v0.34.1
-  container_name: thanos_sidecar
-  restart: unless-stopped
-  command:
-    - sidecar
-    - --tsdb.path=/prometheus/data
-    - --objstore.config-file=/conf/bucket.yml
-    - --prometheus.url=http://prometheus:9090
-    - --grpc-address=0.0.0.0:10901
-  volumes:
-    - /data/thanos/config:/conf
-    - /data/prometheus/data:/prometheus/data
-  links:
-    - prometheus:prometheus
+services:
+  prometheus:
+    image: prom/prometheus:v2.51.2
+    container_name: prometheus
+    restart: unless-stopped
+    user: "1001"
+    command:
+      - "--storage.tsdb.retention.time=31d"
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--web.enable-admin-api"
+      - "--web.enable-lifecycle"
+      - "--storage.tsdb.max-block-duration=2h"
+      - "--storage.tsdb.min-block-duration=2h"
+    volumes:
+      - /data/prometheus/config:/etc/prometheus/
+      - /data/prometheus/data:/prometheus/data
+    ports:
+      - 9090:9090
+    depends_on:
+      - cadvisor
+      - node-exporter
+      - esmr5_exporter
+      - azrt
 
-thanos_store_gateway:
-  image: quay.io/thanos/thanos:v0.34.1
-  container_name: thanos_store_gateway
-  restart: unless-stopped
-  command:
-    - store
-    - --data-dir=/thanos/data
-    - --objstore.config-file=/conf/bucket.yml
-    - --grpc-address=0.0.0.0:10901
-    - --sync-block-duration=30m
-  volumes:
-    - /data/thanos/config:/conf
-    - /data/thanos/data:/thanos/data
+  thanos_sidecar:
+    image: quay.io/thanos/thanos:v0.34.1
+    container_name: thanos_sidecar
+    restart: unless-stopped
+    command:
+      - sidecar
+      - --tsdb.path=/prometheus/data
+      - --objstore.config-file=/conf/bucket.yml
+      - --prometheus.url=http://prometheus:9090
+      - --grpc-address=0.0.0.0:10901
+    volumes:
+      - /data/thanos/config:/conf
+      - /data/prometheus/data:/prometheus/data
+    depends_on:
+      - prometheus
 
-thanos_query:
-  image: quay.io/thanos/thanos:v0.34.1
-  container_name: thanos_query
-  restart: unless-stopped
-  command:
-    - query
-    - --grpc-address=0.0.0.0:10901
-    - --http-address=0.0.0.0:9191
-    - --store=thanos_sidecar:10901
-    - --store=thanos_store_gateway:10901
-    - --query.auto-downsampling
-  ports:
-    - "9191:9191"
-  links:
-    - thanos_sidecar:thanos_sidecar
-    - thanos_store_gateway:thanos_store_gateway
+  thanos_store_gateway:
+    image: quay.io/thanos/thanos:v0.34.1
+    container_name: thanos_store_gateway
+    restart: unless-stopped
+    command:
+      - store
+      - --data-dir=/thanos/data
+      - --objstore.config-file=/conf/bucket.yml
+      - --grpc-address=0.0.0.0:10901
+      - --sync-block-duration=30m
+    volumes:
+      - /data/thanos/config:/conf
+      - /data/thanos/data:/thanos/data
+    depends_on:
+      - thanos_sidecar
 
-thanos_compactor:
-  image: quay.io/thanos/thanos:v0.34.1
-  container_name: thanos_compactor
-  restart: unless-stopped
-  command:
-    - compact
-    - --data-dir=/thanos/data
-    - --objstore.config-file=/conf/bucket.yml
-    - --retention.resolution-raw=30d
-    - --retention.resolution-5m=120d
-    - --retention.resolution-1h=0d
-    - --consistency-delay=60m
-    - --downsample.concurrency=1
-    - --compact.concurrency=1
-    - --log.level=debug
-    - --web.disable
-    - --block-viewer.global.sync-block-interval=60m
-    - --block-meta-fetch-concurrency=1
-    - --compact.cleanup-interval=0s
-    - --compact.progress-interval=0s
-    - --wait
-    - --wait-interval=8h
-  volumes:
-    - /data/thanos/config:/conf
-    - /data/thanos/compactor:/thanos/data
+  thanos_query:
+    image: quay.io/thanos/thanos:v0.34.1
+    container_name: thanos_query
+    restart: unless-stopped
+    command:
+      - query
+      - --grpc-address=0.0.0.0:10901
+      - --http-address=0.0.0.0:9191
+      - --store=thanos_sidecar:10901
+      - --store=thanos_store_gateway:10901
+      - --query.auto-downsampling
+    ports:
+      - "9191:9191"
+    depends_on:
+      - thanos_sidecar
+      - thanos_store_gateway
 
-node-exporter:
-  image: prom/node-exporter:v1.8.0
-  container_name: node_exporter
-  restart: unless-stopped
-  expose:
-    - 9100
+  thanos_compactor:
+    image: quay.io/thanos/thanos:v0.34.1
+    container_name: thanos_compactor
+    restart: unless-stopped
+    command:
+      - compact
+      - --data-dir=/thanos/data
+      - --objstore.config-file=/conf/bucket.yml
+      - --retention.resolution-raw=30d
+      - --retention.resolution-5m=120d
+      - --retention.resolution-1h=0d
+      - --consistency-delay=60m
+      - --downsample.concurrency=1
+      - --compact.concurrency=1
+      - --log.level=debug
+      - --web.disable
+      - --block-viewer.global.sync-block-interval=60m
+      - --block-meta-fetch-concurrency=1
+      - --compact.cleanup-interval=0s
+      - --compact.progress-interval=0s
+      - --wait
+      - --wait-interval=8h
+    volumes:
+      - /data/thanos/config:/conf
+      - /data/thanos/compactor:/thanos/data
 
-cadvisor:
-  image: gcr.io/cadvisor/cadvisor:v0.49.1
-  container_name: cadvisor
-  command:
-    - "--raw_cgroup_prefix_whitelist=/docker/ --disable_metrics=hugetlb"
-  privileged: true
-  restart: unless-stopped
-  devices:
-    - /dev/kmsg:/dev/kmsg
-  volumes:
-    - /:/rootfs:ro
-    - /var/run:/var/run:ro
-    - /sys:/sys:ro
-    - /var/lib/docker/:/var/lib/docker:ro
-    - /etc/machine-id:/etc/machine-id:ro
-  expose:
-    - 8080
+  node-exporter:
+    image: prom/node-exporter:v1.8.0
+    container_name: node_exporter
+    restart: unless-stopped
+    expose:
+      - 9100
 
-esmr5_exporter:
-  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/esmr5_exporter:4d83c5bdb7d29cd9157674e513f2ae5a1e3caa6c
-  container_name: esmr5_exporter
-  restart: unless-stopped
-  devices:
-    - "/dev/ttyUSB0:/dev/ttyUSB0"
-  expose:
-    - 8000
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    container_name: cadvisor
+    command:
+      - "--raw_cgroup_prefix_whitelist=/docker/ --disable_metrics=hugetlb"
+    privileged: true
+    restart: unless-stopped
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /etc/machine-id:/etc/machine-id:ro
+    expose:
+      - 8080
 
-azrt:
-  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/azrt:87011450dcfe0cad5c81392265e236f465ddaf97
-  container_name: azrt
-  restart: unless-stopped
-  env_file: azrt.env
-  expose:
-    - 8080
+  esmr5_exporter:
+    image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/esmr5_exporter:4d83c5bdb7d29cd9157674e513f2ae5a1e3caa6c
+    container_name: esmr5_exporter
+    restart: unless-stopped
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    expose:
+      - 8000
 
-brandweerrooster_client:
-  image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/brandweerrooster_client:b24c2388f98294f08525df9680f4b7bf8958c923
-  container_name: brandweerrooster_client
-  restart: unless-stopped
-  env_file: brandweerrooster_client.env
+  azrt:
+    image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/azrt:87011450dcfe0cad5c81392265e236f465ddaf97
+    container_name: azrt
+    restart: unless-stopped
+    env_file: azrt.env
+    expose:
+      - 8080
 
-grafana:
-  image: grafana/grafana:10.4.2
-  container_name: grafana
-  restart: unless-stopped
-  user: "$UID:$GID"
-  links:
-    - prometheus:prometheus
-    - thanos_query:thanos_query
-  volumes:
-    - /data/grafana:/var/lib/grafana
-  env_file: grafana.env
-  ports:
-    - 3000:3000
+  brandweerrooster_client:
+    image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/brandweerrooster_client:b24c2388f98294f08525df9680f4b7bf8958c923
+    container_name: brandweerrooster_client
+    restart: unless-stopped
+    env_file: brandweerrooster_client.env
+
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: grafana
+    restart: unless-stopped
+    user: "$UID:$GID"
+    volumes:
+      - /data/grafana:/var/lib/grafana
+    env_file: grafana.env
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+      - thanos_query
