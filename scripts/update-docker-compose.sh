@@ -11,5 +11,5 @@ else
     echo "docker-compose changed, copy file and reload Docker"
     cp ${tmp_dir}/docker-compose.yml ${docker_dir}/docker-compose.yml
     rm ${tmp_dir}/docker-compose.yml
-    docker-compose -f ${docker_dir}/docker-compose.yml up -d
+    docker compose -f ${docker_dir}/docker-compose.yml up -d
 fi
