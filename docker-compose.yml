@@ -25,7 +25,7 @@ services:
       - azrt
 
   thanos_sidecar:
-    image: quay.io/thanos/thanos:v0.34.1
+    image: quay.io/thanos/thanos:v0.35.0
     container_name: thanos_sidecar
     restart: unless-stopped
     command:
@@ -41,7 +41,7 @@ services:
       - prometheus
 
   thanos_store_gateway:
-    image: quay.io/thanos/thanos:v0.34.1
+    image: quay.io/thanos/thanos:v0.35.0
     container_name: thanos_store_gateway
     restart: unless-stopped
     command:
@@ -57,7 +57,7 @@ services:
       - thanos_sidecar
 
   thanos_query:
-    image: quay.io/thanos/thanos:v0.34.1
+    image: quay.io/thanos/thanos:v0.35.0
     container_name: thanos_query
     restart: unless-stopped
     command:
@@ -74,7 +74,7 @@ services:
       - thanos_store_gateway
 
   thanos_compactor:
-    image: quay.io/thanos/thanos:v0.34.1
+    image: quay.io/thanos/thanos:v0.35.0
     container_name: thanos_compactor
     restart: unless-stopped
     command:
