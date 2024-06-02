@@ -9,5 +9,6 @@ jobs:
     - uses: actions/checkout@v4
     - name: Running docker compose config
       run: |
+        touch brandweerrooster_client.env
         docker compose -f docker-compose.yml config --no-interpolate
 
