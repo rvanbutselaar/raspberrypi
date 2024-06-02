@@ -3,7 +3,7 @@ name: main
 on: [push]
 
 jobs:
-  pylint:
+  docker-compose-config:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
