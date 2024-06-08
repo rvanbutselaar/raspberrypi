@@ -125,7 +125,7 @@ services:
       - 8080
 
   esmr5_exporter:
-    image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/esmr5_exporter:4d83c5bdb7d29cd9157674e513f2ae5a1e3caa6c
+    image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/esmr5_exporter:e675f3f9d89e874a01b22c4d57e77f00dc6a144b
     container_name: esmr5_exporter
     restart: unless-stopped
     devices:
