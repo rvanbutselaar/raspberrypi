@@ -142,7 +142,7 @@ services:
       - 8080
 
   brandweerrooster_client:
-    image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/brandweerrooster_client:39a447a2535741f8847641d1bf3c02f0e618819e
+    image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/brandweerrooster_client:760747d954fcd413c51a86dd88e29b73001009e7
     container_name: brandweerrooster_client
     restart: unless-stopped
     env_file: brandweerrooster_client.env
