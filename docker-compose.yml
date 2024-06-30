@@ -134,7 +134,7 @@ services:
       - 8000
 
   azrt:
-    image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/azrt:1dd84705306bfb7c1448ca0b979844efe7b223ec
+    image: 388874647441.dkr.ecr.eu-central-1.amazonaws.com/azrt:798ecfe2757ab98467e60b3e836f183c99217253
     container_name: azrt
     restart: unless-stopped
     env_file: azrt.env
